@@ -32,9 +32,11 @@ class TweetCell: UITableViewCell {
         // Initialization code
         if (currTweet?.favorited ?? false) {
             favoriteButton.setImage(UIImage.init(named: "favor-icon-unselected"), for: .normal)
+            favoriteLabel.text = "\(self.currTweet?.favoritesCount)!"
         }
         if (currTweet?.retweeted ?? false) {
             retweetButton.setImage(UIImage.init(named: "retweet-icon-unselected"), for: .normal)
+            retweetLabel.text = "\(self.currTweet?.retweetCount)!"
         }
 
     }
@@ -48,22 +50,35 @@ class TweetCell: UITableViewCell {
     }
     
     @IBAction func onRetweer(_ sender: UIButton) {
-        if (currTweet?.favorited ?? false) {
-            currTweet?.unfavorite()
-            favoriteButton.setImage(UIImage.init(named: "favor-icon"), for: .normal)
+        
+        if (currTweet?.retweeted ?? false) {
+            currTweet?.unretweet()
+            self.retweetLabel.text = "\((self.currTweet?.retweetCount)!)"
+
+            retweetButton.setImage(UIImage.init(named: "retweet-icon-unselected"), for: .normal)
         } else {
-            currTweet?.favorite()
-            favoriteButton.setImage(UIImage.init(named: "favor-icon-red"), for: .normal)
+            currTweet?.retweet()
+            self.retweetLabel.text = "\((self.currTweet?.retweetCount)!)"
+
+            retweetButton.setImage(UIImage.init(named: "retweet-icon-selected"), for: .normal)
         }
+        
+        
 
     }
     @IBAction func onFavorite(_ sender: UIButton) {
-        if (currTweet?.retweeted ?? false) {
-            currTweet?.unretweet()
-            retweetButton.setImage(UIImage.init(named: "retweet-icon"), for: .normal)
+        
+        if (currTweet?.favorited ?? false) {
+            currTweet?.unfavorite()
+            self.favoriteLabel.text = "\((self.currTweet?.favoritesCount)!)"
+            favoriteButton.setImage(UIImage.init(named: "favor-icon-unselected"), for: .normal)
         } else {
-            currTweet?.retweet()
-            retweetButton.setImage(UIImage.init(named: "retweet-icon-green"), for: .normal)
+
+            currTweet?.favorite()
+            self.favoriteLabel.text = "\((self.currTweet?.favoritesCount)!)"
+
+            favoriteButton.setImage(UIImage.init(named: "favor-icon-selected"), for: .normal)
+            
         }
     }
 

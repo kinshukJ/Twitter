@@ -61,8 +61,12 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
             let cell = tweetsTableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
             let currTweet = tweets[indexPath.row]
-        
+            cell.retweetLabel.text = "\(currTweet.retweetCount)"
+            cell.favoriteLabel.text = "\(currTweet.favoritesCount)"
             cell.currTweet = currTweet
+            cell.retweetLabel.adjustsFontSizeToFitWidth = true
+            cell.favoriteLabel.adjustsFontSizeToFitWidth = true
+            print(currTweet.user?.profileUrl! ?? "sdf")
             cell.userImageView.setImageWith((currTweet.user?.profileUrl!)!)
 
             cell.userName.text = currTweet.user?.name
