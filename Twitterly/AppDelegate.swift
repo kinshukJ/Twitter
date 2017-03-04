@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 import BDBOAuth1Manager
 
 @UIApplicationMain
@@ -14,23 +15,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
+   
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        if User.currentUser != nil {
-            print("There is a current user")
+        
+        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
+        if (User.currentUser != nil) {
+            let viewController = storyboard.instantiateViewController(withIdentifier: "TweetsNavigationController")
             
+            window?.rootViewController = viewController
         }
-        
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: User.userDidLogoutNotification), object: nil, queue: OperationQueue.main) { (Notification) in
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateInitialViewController()
-         
-            self.window?.rootViewController = vc
-
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.init(User.userDidLogoutNotification), object: nil, queue: OperationQueue.main) { (Notification) in
+            self.window?.rootViewController = storyboard.instantiateInitialViewController()
         }
-        
         return true
+
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -53,6 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
@@ -64,6 +64,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
         return true
     }
+    
+    
     
 
 

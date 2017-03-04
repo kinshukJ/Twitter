@@ -7,23 +7,32 @@
 //
 
 import UIKit
+import AFNetworking
 
-class TweetsViewController: UIViewController {
+class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+   
+    
 
     
     var tweets : [Tweet]!
     
+    @IBOutlet weak var tweetsTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tweetsTableView.dataSource = self
+        tweetsTableView.delegate = self
+        
+        tweetsTableView.rowHeight = UITableViewAutomaticDimension
+        tweetsTableView.estimatedRowHeight = 120
+        
         TwitterClient.sharedInstance?.homeTimeline(success: { (tweets: [Tweet]) in
             
+
+            
             self.tweets = tweets
-            
-            for tweet in tweets {
-                print(tweet.text!)
-            }
-            
+            self.tweetsTableView.reloadData()
+         
             
         }, failure: { (error: Error) in
             print("Error: \(error.localizedDescription)")
@@ -38,6 +47,34 @@ class TweetsViewController: UIViewController {
         
         
     }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let tweets = tweets {
+            return tweets.count
+        }
+        else {
+            return 0
+        }
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
+            let cell = tweetsTableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
+            let currTweet = tweets[indexPath.row]
+        
+            cell.currTweet = currTweet
+            cell.userImageView.setImageWith((currTweet.user?.profileUrl!)!)
+
+            cell.userName.text = currTweet.user?.name
+            cell.userTweet.text = currTweet.text
+            cell.userTimeStamp.text = "\(Int((currTweet.timeStamp?.timeIntervalSinceNow.rounded())! * -1 / 60)) min"
+            
+            return cell
+
+    }
+    
+
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

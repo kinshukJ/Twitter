@@ -11,7 +11,9 @@ import BDBOAuth1Manager
 
 class TwitterClient: BDBOAuth1SessionManager {
     
-
+    static let homeTimelineEndpoint: String = "1.1/statuses/home_timeline.json"
+    static let verifyCredentialsEndpoint: String = "1.1/account/verify_credentials.json"
+    static let baseUrl: String = "https://api.twitter.com"
     static let sharedInstance = TwitterClient(baseURL: NSURL(string: "https://api.twitter.com")! as URL!, consumerKey: "8kY9ITr1Wg2rHqqo2Kgc7ySMZ", consumerSecret: "kUHtWHVtdrPchLyzJZuImRg8y3l64t1QUw6VzvkjRd9ml8D0gD")
     
     var loginSuccess: (()->())?
@@ -71,35 +73,25 @@ class TwitterClient: BDBOAuth1SessionManager {
     }
     
     func currentAccount( success: @escaping (User)->(), failure: @escaping (Error)->() ) {
-       get("1.1/account/verify_credentials.json", parameters: nil, success: { (task: URLSessionDataTask, response:Any?) in
-            
-            let userDictionary = response as! NSDictionary
-            
-            let user = User(dictionary: userDictionary)
+        get(TwitterClient.verifyCredentialsEndpoint, parameters: nil, progress: nil, success: { (URLSessionDataTask, response: Any?) in
+            let userDictionary = response as! Dictionary<String, Any>
+            let user = User.init(dictionary: userDictionary)
             
             success(user)
-            
-        }, failure: { (task : URLSessionDataTask?, error:Error) in
-            failure(error )
-        })
-
+        }) { (URLSessionDataTask, error: Error) in
+            failure(error)
+        }
     }
     
     
-    func homeTimeline( success: @escaping ([Tweet])->(), failure: (Error )->()) {
+    func homeTimeline( success: @escaping ([Tweet])->(), failure: @escaping (Error )->()) {
         
-     get("1.1/statuses/home_timeline.json", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response:Any?) in
-            
-            let dictionaries = response as! [NSDictionary]
-            
+        get(TwitterClient.homeTimelineEndpoint, parameters: nil, progress: nil, success: { (URLSessionDataTask, response: Any?) in
+            let dictionaries = response as! [Dictionary<String, Any>]
             let tweets = Tweet.tweetsWithArray(dictionaries: dictionaries)
-        
             success(tweets)
-        
-            
-        }, failure: { (task : URLSessionDataTask?, error: Error) in
-            
-        })
-
+        }) { (URLSessionDataTask, error: Error) in
+            failure(error)
+        }
     }
 }

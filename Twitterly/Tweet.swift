@@ -9,10 +9,13 @@
 import UIKit
 
 class Tweet: NSObject {
+    var user: User?
     var text: String?
-    var timeStamp : Date?
-    var retweetCount : Int = 0
-    var favoritesCount : Int = 0
+    var timeStamp: Date?
+    var retweetCount: Int
+    var favoritesCount: Int
+    var favorited = false
+    var retweeted = false
     
     init(dictionary: NSDictionary) {
         text = dictionary["text"] as? String
@@ -29,15 +32,42 @@ class Tweet: NSObject {
         }
     }
     
-    class func tweetsWithArray(dictionaries: [NSDictionary]) -> [Tweet] {
+    class func tweetsWithArray(dictionaries: [Dictionary<String, Any>]) -> [Tweet] {
         var tweets = [Tweet]()
         
         for dictionary in dictionaries {
-            let tweet = Tweet(dictionary: dictionary)
-            
-            tweets.append(tweet)
+            tweets.append(Tweet.init(dictionary: dictionary as NSDictionary))
         }
         
         return tweets
+    }
+    
+       
+    func unfavorite() {
+        if (favorited) {
+            favorited = false
+            favoritesCount -= 1
+        }
+    }
+    
+    func favorite() {
+        if (!favorited) {
+            favorited = true
+            favoritesCount += 1
+        }
+    }
+    
+    func unretweet() {
+        if (retweeted) {
+            retweeted = false
+            retweetCount -= 1
+        }
+    }
+    
+    func retweet() {
+        if (!retweeted) {
+            retweeted = true
+            retweetCount += 1
+        }
     }
 }
