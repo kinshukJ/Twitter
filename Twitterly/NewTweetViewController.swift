@@ -1,5 +1,5 @@
 //
-//  ProfileViewController.swift
+//  NewTweetViewController.swift
 //  Twitterly
 //
 //  Created by Kinshuk Juneja on 3/6/17.
@@ -8,31 +8,20 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+class NewTweetViewController: UIViewController {
 
-    var user : User?
-    
-    @IBOutlet weak var profileImage: UIImageView!
-    
-    @IBOutlet weak var tweetsCount: UILabel!
-    
-    @IBOutlet weak var followingCount: UILabel!
-    
-    @IBOutlet weak var followersCount: UILabel!
-    
+    @IBOutlet weak var userProfileImage: UIImageView!
     @IBOutlet weak var userName: UILabel!
-    
     @IBOutlet weak var userHandle: UILabel!
+    @IBOutlet weak var charCount: UILabel!
+    
+    
+    @IBAction func onTweet(_ sender: Any) {
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        profileImage.setImageWith((user?.profileUrl)!)
-        tweetsCount.text = "\((user?.tweetsCount)!)"
-        followersCount.text = "\((user?.followersCount)!)"
-        followingCount.text = "\((user?.followingCount)!)"
-        userName.text = user?.name
-        userHandle.text = "@\((user?.screenname)!)"
         // Do any additional setup after loading the view.
     }
 
