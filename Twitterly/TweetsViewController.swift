@@ -57,7 +57,7 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
             let cell = tweetsTableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
             let currTweet = tweets[indexPath.row]
@@ -67,7 +67,7 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             cell.retweetLabel.adjustsFontSizeToFitWidth = true
             cell.favoriteLabel.adjustsFontSizeToFitWidth = true
             print(currTweet.user?.profileUrl! ?? "sdf")
-            cell.userImageView.setImageWith((currTweet.user?.profileUrl!)!)
+           // cell.userImageView.setImageWith((currTweet.user?.profileUrl!)!)
 
             cell.userName.text = currTweet.user?.name
             cell.userTweet.text = currTweet.text
@@ -84,6 +84,17 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Dispose of any resources that can be recreated.
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let cell = sender as! UITableViewCell
+        let indexPath = tweetsTableView.indexPath(for: cell)
+        let tweet = tweets![(indexPath?.row)!]
+        
+        let detailViewController = segue.destination as! DetailViewController
+        detailViewController.tweet = tweet
+        
+        
+    }
 
     /*
     // MARK: - Navigation
