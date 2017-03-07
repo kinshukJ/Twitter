@@ -25,6 +25,8 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var favoriteLabel: UILabel!
     @IBOutlet weak var favoriteButton: UIButton!
     
+    @IBOutlet weak var profileImageButton: UIButton!
+    
     var currTweet: Tweet?
     
     override func awakeFromNib() {

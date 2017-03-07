@@ -86,6 +86,7 @@ class DetailViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
+        
         let replyTweet = tweet
         let replyViewController = segue.destination as! ReplyViewController
         replyViewController.tweet = replyTweet
