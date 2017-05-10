@@ -38,8 +38,6 @@ class DetailViewController: UIViewController {
         tweetTimeStamp.text = "\(Int((tweet?.timeStamp?.timeIntervalSinceNow.rounded())! * -1 / 60)) min"
         retweetsCount.text = "\((tweet?.retweetCount)!)"
         favoritesCount.text = "\((tweet?.favoritesCount)!)"
-        
-     
 
         // Do any additional setup after loading the view.
     }
@@ -62,8 +60,6 @@ class DetailViewController: UIViewController {
             
             retweetButton.setImage(UIImage.init(named: "retweet-icon-selected"), for: .normal)
         }
-        
-        
         
     }
 
